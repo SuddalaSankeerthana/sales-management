@@ -18,15 +18,16 @@
 ## Usage :
 
 - Clone the repository by running the following command, or download the repository.
-  ```
- https://github.com/SuddalaSankeerthana/sales-management.git
-  ```
+  
+```
+https://github.com/SuddalaSankeerthana/sales-management.git
+```
 - install npm module.
-  ```
-  npm install
-  ```
+```
+npm install
+```
 - To run and generate the invoice, run the following command. Path for the json data in the script need to be updated for this.
-  ```
- npm run start
-  ```
+```
+npm run start
+```
 
