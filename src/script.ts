@@ -1,8 +1,9 @@
 import fs from "fs";
 import { CustomerDataJson } from "./interfaces";
 const getInvoiceFunction =require("./invoice");
-const jsonString = fs.readFileSync(
-    "/Users/sankeerthana/Documents/sales-management/data/customerData.json",
+const path = require("path");
+path.resolve(__dirname, "../file.xml")
+const jsonString = fs.readFileSync("./data/customerData.json",
   "utf-8"
 );
 const jsonFileData: CustomerDataJson = JSON.parse(jsonString);
