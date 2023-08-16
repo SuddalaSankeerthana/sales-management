@@ -25,7 +25,8 @@
   ```
   npm install
   ```
-- To run and generate the invoice, run the following command.
+- To run and generate the invoice, run the following command. Path for the json data in the script need to be updated for this.
   ```
  npm run start
   ```
+
