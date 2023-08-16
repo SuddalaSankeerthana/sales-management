@@ -1,33 +1,71 @@
 import { CustomerDataJson } from "./interfaces";
+function getStyles(){
+  return(`
+      .text-bold-black{color: black;  font-weight: bold;}
+      .text-gray-right{
+      color:gray;
+      text-align: left;
+      }
+      .text-black{
+      color:black;
+      font-weight: bold;
+      }
+      .Section-1{
+      border-top: 1px solid;
+      border-bottom: 1px solid;
+      }
+      .Section-2{
+      text-align: left;
+      justify-content: left;
+    }
+    .Padd-left{
+      text-align: left;
+    }
+    table, td {
+     width: fit-content;
+     justify-content:center;
+    }
+    body{
+    display: flex;
+    width: fit-content;
+    align-items: right;
+    justify-content: center;
+    flex-direction: column;
+    font-family:monospace;
+    border: solid;
+    }
+    h3{
+      text-align: center;
+    }
+    `);
+}
 function getDeliveryHTML(options:CustomerDataJson) {
   let data= `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice</title>
-    <style> 
-    </style>
-</head>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Invoice</title>
+      <style>${getStyles()}</style>
+  </head>
 <body>
     <div class= "Section-1">
     <h3 class="font-bold">${options.storeName}</h3>
-    <p>Name : ${options.name}</p>
-    <p>${options.address}</p>
-    <p>Phone number:${options.phoneNumber}</p>
-    <p>Date:${new Date()}</p>
+    <p><span class="text-black"> <Address>${options.address}</Address></span></p>
+    <p class="Padd-left"><span class="text-black">Name : </span>${options.name}</p>
+    <p class="Padd-left"><span class="text-black">Phone number : </span>${options.phoneNumber}</p>
+    <p class="Padd-left"><span class="text-black">Date : </span>${new Date()}</p>
     </div>
-    <p>**********************</p>
     <div class="Section-2">
     <table>
     <tr>
-    <td width=10%>Item</td>
-    <td width=10%>quantity</td>
-    <td width=10%>Price</td>
-    <td width=10%>GSTPercentage</td>
-    <td width=10%>Total GST</td>
-    <td width=10%>Item Amount</td>
+    <td class="text-black" width=10%>Item</td>
+    <td class="text-black" width=10%>quantity</td>
+    <td class="text-black" width=10%>Price</td>
+    <td class="text-black" width=10%>GSTPercentage</td>
+    <td class="text-black" width=10%>GST Amount</td>
+    <td class="text-black" width=10%>Item Amount</td>
     </tr>`
   let totalAmount=0;
   let totalGst=0;
@@ -50,9 +88,9 @@ function getDeliveryHTML(options:CustomerDataJson) {
   data+=
   `</table>
   <div class=" pt-20 pr-10 text-right">
-    <p class="text-gray">Total price : <span class="text-black">₹${totalAmount}</span></p>
-    <p class="text-gray">Total GST : <span class="text-black">₹${totalGst}</span></p>
-    <p class="text-gray">Total Amount : <span class="text-black">₹${totalAmount+totalGst}</span></p>
+    <p class="text-gray-right">Total price : <span class="text-black">₹${totalAmount}</span></p>
+    <p class="text-gray-right">Total GST : <span class="text-black">₹${totalGst}</span></p>
+    <p class="text-gray-right">Total Amount : <span class="text-black">₹${totalAmount+totalGst}</span></p>
   </div>
 </body>
 </html>
