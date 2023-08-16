@@ -1,4 +1,5 @@
 import { CustomerDataJson } from "./interfaces";
+const gstPercentage=[1,5,10]// Based on categeory the percentage will be taken
 function getStyles(){
   return(`
       .text-bold-black{color: black;  font-weight: bold;}
@@ -63,7 +64,7 @@ function getDeliveryHTML(options:CustomerDataJson) {
     <td class="text-black" width=10%>Item</td>
     <td class="text-black" width=10%>quantity</td>
     <td class="text-black" width=10%>Price</td>
-    <td class="text-black" width=10%>GSTPercentage</td>
+    <td class="text-black" width=10%>GST(%)</td>
     <td class="text-black" width=10%>GST Amount</td>
     <td class="text-black" width=10%>Item Amount</td>
     </tr>`
@@ -79,8 +80,8 @@ function getDeliveryHTML(options:CustomerDataJson) {
         <td width=10%>${item.name}</td>
         <td width=10%>${item.qty}</td>
         <td width=10%>₹${item.rate}</td>
-        <td width=10%>${item.GSTPercentage}</td>
-        <td width=10%>${totalGst} </td>
+        <td width=10%>${gstPercentage[item.gstCategory]}</td>
+        <td width=10%>${itemGst} </td>
         <td width=10%>₹${itemAmount}</td>
     </tr>
     `; 

@@ -6,8 +6,6 @@ const jsonString = fs.readFileSync(
   "utf-8"
 );
 const jsonFileData: CustomerDataJson = JSON.parse(jsonString);
-console.log(jsonFileData);
-console.log(getInvoiceFunction)
 getInvoiceFunction(jsonFileData).then((html:string)=>{
     fs.writeFileSync("invoice.html", html);
     console.log("File generated");

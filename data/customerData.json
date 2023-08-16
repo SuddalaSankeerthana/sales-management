@@ -1,6 +1,6 @@
 {
-    "name":"Sri",
-    "storeName": "Vishal Megha Mart",
+    "name":"Vishal",
+    "storeName": "Vishal Mega Mart",
     "address":"4th Main Road, Hal, HAL 3rd Stage, New Tippasandra, Bengaluru, Karnataka",
     "phoneNumber":"99028893472",
     "GSTNumber":"06221936439",
@@ -10,20 +10,19 @@
             "name": "Milk",
             "qty": 2,
             "rate": 10.00,
-            "GSTPercentage":1
+            "gstCategory":0
         },
         {
             "name": "TV",
             "qty": 1,
             "rate": 10000,
-            "GSTPercentage":5,
-            "amount":0
+            "gstCategory":2
         },
         {
-            "name": "TOWEL",
+            "name": "Fridge",
             "qty": 1,
-            "rate": 5.00,
-            "GSTPercentage":10
+            "rate": 5000,
+            "gstCategory":2
         }
     ]
 }

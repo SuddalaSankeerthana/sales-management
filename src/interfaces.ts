@@ -2,7 +2,7 @@ export type Item = {
     name: string;
     qty: number;
     rate: number;
-    GSTPercentage: number;
+    gstCategory: number;
   };
   export interface CustomerDataJson {
     name: string;
