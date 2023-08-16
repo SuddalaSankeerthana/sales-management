@@ -1,0 +1,24 @@
+{
+  "name": "salesmanagement",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start:dev": "npx nodemon",
+    "start": "npm run build && node build/script.js",
+    "build": "rimraf ./build && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "convert-html-to-pdf": "^1.0.1",
+    "fs": "^0.0.1-security"
+  }
+}

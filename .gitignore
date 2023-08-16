@@ -1,0 +1,8 @@
+# dependencies
+/node_modules
+# production
+/build
+/invoice.html
+# misc
+.env
+.DS_Store

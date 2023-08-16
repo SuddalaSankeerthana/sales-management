@@ -1,0 +1,29 @@
+{
+    "name":"Sri",
+    "storeName": "Vishal Megha Mart",
+    "address":"4th Main Road, Hal, HAL 3rd Stage, New Tippasandra, Bengaluru, Karnataka",
+    "phoneNumber":"99028893472",
+    "GSTNumber":"06221936439",
+    "dateTime":"14-08-2023",
+    "items": [
+        {
+            "name": "Milk",
+            "qty": 2,
+            "rate": 10.00,
+            "GSTPercentage":1
+        },
+        {
+            "name": "TV",
+            "qty": 1,
+            "rate": 10000,
+            "GSTPercentage":5,
+            "amount":0
+        },
+        {
+            "name": "TOWEL",
+            "qty": 1,
+            "rate": 5.00,
+            "GSTPercentage":10
+        }
+    ]
+}
