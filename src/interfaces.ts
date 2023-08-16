@@ -11,5 +11,6 @@ export type Item = {
     phoneNumber: string;
     GSTNumber: string;
     dateTime: Date;
+    paymentMethod:string;
     items: Item[];
   }

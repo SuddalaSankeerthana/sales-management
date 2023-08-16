@@ -5,6 +5,7 @@
     "phoneNumber":"99028893472",
     "GSTNumber":"06221936439",
     "dateTime":"14-08-2023",
+    "paymentMethod":"GPay",
     "items": [
         {
             "name": "Milk",

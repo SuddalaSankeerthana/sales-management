@@ -92,6 +92,7 @@ function getDeliveryHTML(options:CustomerDataJson) {
     <p class="text-gray-right">Total price : <span class="text-black">₹${totalAmount}</span></p>
     <p class="text-gray-right">Total GST : <span class="text-black">₹${totalGst}</span></p>
     <p class="text-gray-right">Total Amount : <span class="text-black">₹${totalAmount+totalGst}</span></p>
+    <p>Payment method : ${options.paymentMethod}</p>
   </div>
 </body>
 </html>
