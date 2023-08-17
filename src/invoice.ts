@@ -1,45 +1,8 @@
 import { CustomerDataJson } from "./interfaces";
+import getStyles from "../src/invoiceStyling"
+
 const gstPercentage=[1,5,10]// Based on categeory the percentage will be taken
-function getStyles(){
-  return(`
-      .text-bold-black{color: black;  font-weight: bold;}
-      .text-gray-right{
-      color:gray;
-      text-align: left;
-      }
-      .text-black{
-      color:black;
-      font-weight: bold;
-      }
-      .Section-1{
-      border-top: 1px solid;
-      border-bottom: 1px solid;
-      }
-      .Section-2{
-      text-align: left;
-      justify-content: left;
-    }
-    .Padd-left{
-      text-align: left;
-    }
-    table, td {
-     width: fit-content;
-     justify-content:center;
-    }
-    body{
-    display: flex;
-    width: fit-content;
-    align-items: right;
-    justify-content: center;
-    flex-direction: column;
-    font-family:monospace;
-    border: solid;
-    }
-    h3{
-      text-align: center;
-    }
-    `);
-}
+
 function getDeliveryHTML(options:CustomerDataJson) {
   let data= `
   <!DOCTYPE html>
@@ -60,29 +23,29 @@ function getDeliveryHTML(options:CustomerDataJson) {
     </div>
     <div class="Section-2">
     <table>
-    <tr>
-    <td class="text-black" width=10%>Item</td>
-    <td class="text-black" width=10%>quantity</td>
-    <td class="text-black" width=10%>Price</td>
-    <td class="text-black" width=10%>GST(%)</td>
-    <td class="text-black" width=10%>GST Amount</td>
-    <td class="text-black" width=10%>Item Amount</td>
+    <tr class="text-black">
+    <td >Item</td>
+    <td >quantity</td>
+    <td >Price</td>
+    <td >GST(%)</td>
+    <td >GST Amount</td>
+    <td >Item Amount</td>
     </tr>`
   let totalAmount=0;
   let totalGst=0;
   for (let item of options.items) {
     let itemAmount=item.qty*item.rate;
-    let itemGst=item.qty*(item.rate*0.01);
+    let itemGst=item.qty*(item.rate*0.01)*gstPercentage[item.gstCategory];
      totalAmount+=itemAmount
      totalGst+=itemGst
     data += `
     <tr>
-        <td width=10%>${item.name}</td>
-        <td width=10%>${item.qty}</td>
-        <td width=10%>₹${item.rate}</td>
-        <td width=10%>${gstPercentage[item.gstCategory]}</td>
-        <td width=10%>${itemGst} </td>
-        <td width=10%>₹${itemAmount}</td>
+        <td >${item.name}</td>
+        <td >${item.qty}</td>
+        <td >₹${item.rate}</td>
+        <td >${gstPercentage[item.gstCategory]}</td>
+        <td >${itemGst} </td>
+        <td >₹${itemAmount}</td>
     </tr>
     `; 
   }
