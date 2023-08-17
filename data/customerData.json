@@ -11,19 +11,26 @@
             "name": "Milk",
             "qty": 2,
             "rate": 10.00,
-            "gstCategory":0
+            "gstCategory":0,
+            "discount":10
         },
         {
             "name": "TV",
             "qty": 1,
             "rate": 10000,
-            "gstCategory":2
+            "gstCategory":2,
+            "discount":10
         },
         {
             "name": "Fridge",
             "qty": 1,
             "rate": 5000,
-            "gstCategory":2
+            "gstCategory":2,
+            "discount":10
         }
+    ],
+    "storeDiscounts" :[
+        {"cost": 500, "discount": 2 },
+        {"cost": 5000,"discount": 5 }
     ]
 }
