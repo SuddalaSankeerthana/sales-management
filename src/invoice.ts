@@ -42,6 +42,7 @@ function getDeliveryHTML(options: CustomerDataJson) {
     <td >Item Amount</td>
     </tr>`;
   let totalAmount = 0,
+    totalItemsDiscountAmount = 0,
     totalGst = 0,
     totalItemsPrice = 0;
   for (let item of options.items) {
@@ -49,6 +50,7 @@ function getDeliveryHTML(options: CustomerDataJson) {
       item.qty * (item.rate * 0.01) * gstPercentage[item.gstCategory];
     totalGst += itemGst;
     let itemDiscountAmount = item.rate * 0.01 * item.discount;
+    totalItemsDiscountAmount += itemDiscountAmount;
     let itemPrice = item.qty * item.rate;
     let itemAmount = itemPrice + itemGst - itemDiscountAmount;
     totalItemsPrice += itemPrice;
@@ -82,6 +84,9 @@ function getDeliveryHTML(options: CustomerDataJson) {
     <p class="text-gray-right">Total GST : <span class="text-black">₹${totalGst}</span></p>
     <p class="text-gray-right">Store Discount(%) : <span class="text-black">${storeDiscount}</span></p>
     <p class="text-gray-right">Store Discount Amount: <span class="text-black">₹${storeDiscountAmount}</span></p>
+    <p class="text-gray-right">Total Money Saved: <span class="text-black">₹${
+      storeDiscountAmount + totalItemsDiscountAmount
+    }</span></p>
     <p class="text-gray-right">Total Amount : <span class="text-black">₹${totalAmount}</span></p>
     <p>Payment method : ${options.paymentMethod}</p>
   </div>
