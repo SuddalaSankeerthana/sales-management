@@ -1,19 +1,19 @@
 import { CustomerDataJson, Item } from "./interfaces";
 import getStyles from "../src/invoiceStyling";
-
-const gstPercentage = [1, 5, 10]; // Based on categeory the percentage will be taken
+const PERCENTAGE_FACTOR=0.01;
+const gstPercentage:number[]= [1, 5, 10]; // Based on categeory the percentage will be taken
 function getItemsTableRow(item:Item,itemDiscountAmount:number,itemAmount:number,itemGst:number){
 return(`<tr>
-    <td >${item.name}</td>
-    <td >${item.qty}</td>
-    <td >₹${item.rate}</td>
-    <td >${item.discount}</td>
-    <td >${itemDiscountAmount}</td>
-    <td >${gstPercentage[item.gstCategory]}</td>
-    <td >${itemGst} </td>
-    <td >₹${itemAmount}</td>
-</tr>
-`);
+          <td>${item.name}</td>
+          <td>${item.qty}</td>
+          <td>₹${item.rate}</td>
+          <td>${item.discount}</td>
+          <td>${itemDiscountAmount}</td>
+          <td>${gstPercentage[item.gstCategory]}</td>
+          <td>${itemGst} </td>
+          <td>₹${itemAmount}</td>
+        </tr>
+        `);
 }
 function getHtmlHeader(){
 return(`<!DOCTYPE html>
@@ -26,62 +26,60 @@ return(`<!DOCTYPE html>
 </head>
 `)
 }
-function getDeliveryHTML(options: CustomerDataJson) {
-  let data = `${getHtmlHeader()}
+function getContactDetails(storeName:string,address:string,customerName:string,phoneNumber:string){
+return(`<div class= "Section-1">
+      <h3 class="font-bold">${storeName}</h3>
+      <p><span class="text-black"> <Address>${address}</Address></span></p>
+      <p class="Padd-left"><span class="text-black">Name: </span>${customerName}</p>
+      <p class="Padd-left"><span class="text-black">Phone number: </span>${phoneNumber}</p>
+      <p class="Padd-left"><span class="text-black">Date : </span>${new Date()}</p>
+    </div>`
+)
+}
+function getDeliveryHTML(customerData: CustomerDataJson) {
+  let html = `${getHtmlHeader()}
 <body>
-    <div class= "Section-1">
-    <h3 class="font-bold">${options.storeName}</h3>
-    <p><span class="text-black"> <Address>${
-      options.address
-    }</Address></span></p>
-    <p class="Padd-left"><span class="text-black">Name : </span>${
-      options.name
-    }</p>
-    <p class="Padd-left"><span class="text-black">Phone number : </span>${
-      options.phoneNumber
-    }</p>
-    <p class="Padd-left"><span class="text-black">Date : </span>${new Date()}</p>
-    </div>
-
+    ${getContactDetails(customerData.storeName,customerData.address,customerData.name,customerData.phoneNumber)}
     <div class="Section-2">
-    <table>
-    <tr class="text-black">
-    <td >Item</td>
-    <td >quantity</td>
-    <td >Price</td>
-    <td >Discount(%)</td>
-     <td >Discount Amount</td>
-    <td >GST(%)</td>
-    <td >GST Amount</td>
-    <td >Item Amount</td>
-    </tr>`;
+      <table>
+        <tr class="text-black">
+          <td>Item</td>
+          <td>quantity</td>
+          <td>Price</td>
+          <td>Discount(%)</td>
+          <td>Discount Amount</td>
+          <td>GST(%)</td>
+          <td>GST Amount</td>
+          <td>Item Amount</td>
+        </tr>
+        `;
   let totalAmount = 0,
     totalItemsDiscountAmount = 0,
     totalGst = 0,
     totalItemsPrice = 0;
-  for (let item of options.items) {
+  for (let item of customerData.items) {
     let itemGst =
-      item.qty * (item.rate * 0.01) * gstPercentage[item.gstCategory];
+      item.qty * (item.rate * PERCENTAGE_FACTOR) * gstPercentage[item.gstCategory];
     totalGst += itemGst;
-    let itemDiscountAmount = item.rate * 0.01 * item.discount;
+    let itemDiscountAmount = item.rate * PERCENTAGE_FACTOR * item.discount;
     totalItemsDiscountAmount += itemDiscountAmount;
     let itemPrice = item.qty * item.rate;
     let itemAmount = itemPrice + itemGst - itemDiscountAmount;
     totalItemsPrice += itemPrice;
     totalAmount += itemAmount;
-    data += `${getItemsTableRow(item,itemDiscountAmount,itemAmount,itemGst)}`;
+    html += `${getItemsTableRow(item,itemDiscountAmount,itemAmount,itemGst)}`;
   }
 
   let storeDiscount = 0;
-  options.storeDiscounts.forEach((item: { cost: number; discount: number }) => {
+  customerData.storeDiscounts.forEach((item: { cost: number; discount: number }) => {
     if (totalItemsPrice >= item.cost) storeDiscount = item.discount;
   });
 
-  let storeDiscountAmount = totalItemsPrice * 0.01 * storeDiscount;
+  let storeDiscountAmount = totalItemsPrice * PERCENTAGE_FACTOR * storeDiscount;
   totalAmount -= storeDiscountAmount;
 
-  data += `</table>
-  
+  html += `</table>
+  </div>
   <div class=" pt-20 pr-10 text-right">
     <p class="text-gray-right">Total price : <span class="text-black">₹${totalItemsPrice}</span></p>
     <p class="text-gray-right">Total GST : <span class="text-black">₹${totalGst}</span></p>
@@ -91,18 +89,18 @@ function getDeliveryHTML(options: CustomerDataJson) {
       storeDiscountAmount + totalItemsDiscountAmount
     }</span></p>
     <p class="text-gray-right">Total Amount : <span class="text-black">₹${totalAmount}</span></p>
-    <p>Payment method : ${options.paymentMethod}</p>
+    <p>Payment method : ${customerData.paymentMethod}</p>
   </div>
 </body>
 </html>
     `;
-  return data;
+  return html;
 }
 
-const getInvoice = async function getInvoice(options: CustomerDataJson) {
+const getInvoice = async function getInvoice(customerData: CustomerDataJson) {
   return new Promise(async (resolve, reject) => {
     try {
-      const html = getDeliveryHTML(options);
+      const html = getDeliveryHTML(customerData);
       resolve(html);
     } catch (err) {
       reject(err);
