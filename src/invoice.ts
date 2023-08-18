@@ -1,20 +1,34 @@
-import { CustomerDataJson } from "./interfaces";
+import { CustomerDataJson, Item } from "./interfaces";
 import getStyles from "../src/invoiceStyling";
 
 const gstPercentage = [1, 5, 10]; // Based on categeory the percentage will be taken
-
+function getItemsTableRow(item:Item,itemDiscountAmount:number,itemAmount:number,itemGst:number){
+return(`<tr>
+    <td >${item.name}</td>
+    <td >${item.qty}</td>
+    <td >₹${item.rate}</td>
+    <td >${item.discount}</td>
+    <td >${itemDiscountAmount}</td>
+    <td >${gstPercentage[item.gstCategory]}</td>
+    <td >${itemGst} </td>
+    <td >₹${itemAmount}</td>
+</tr>
+`);
+}
+function getHtmlHeader(){
+return(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice</title>
+<style>${getStyles()}</style>
+</head>
+`)
+}
 function getDeliveryHTML(options: CustomerDataJson) {
-  let data = `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Invoice</title>
-      <style>${getStyles()}</style>
-  </head>
+  let data = `${getHtmlHeader()}
 <body>
-
     <div class= "Section-1">
     <h3 class="font-bold">${options.storeName}</h3>
     <p><span class="text-black"> <Address>${
@@ -55,18 +69,7 @@ function getDeliveryHTML(options: CustomerDataJson) {
     let itemAmount = itemPrice + itemGst - itemDiscountAmount;
     totalItemsPrice += itemPrice;
     totalAmount += itemAmount;
-    data += `
-    <tr>
-        <td >${item.name}</td>
-        <td >${item.qty}</td>
-        <td >₹${item.rate}</td>
-        <td >${item.discount}</td>
-        <td >${itemDiscountAmount}</td>
-        <td >${gstPercentage[item.gstCategory]}</td>
-        <td >${itemGst} </td>
-        <td >₹${itemAmount}</td>
-    </tr>
-    `;
+    data += `${getItemsTableRow(item,itemDiscountAmount,itemAmount,itemGst)}`;
   }
 
   let storeDiscount = 0;

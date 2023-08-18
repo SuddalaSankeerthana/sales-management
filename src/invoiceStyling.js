@@ -1,29 +1,29 @@
 function getStyles() {
   return `
-      .text-bold-black{color: black;  font-weight: bold;}
-      .text-gray-right{
-      color:gray;
-      text-align: left;
-      }
-      .text-black{
-      width:10%;
-      color:black;
-      font-weight: bold;
-      }
-      .Section-1{
-      border-top: 1px solid;
-      border-bottom: 1px solid;
-      }
-      .Section-2{
-      text-align: left;
-      justify-content: left;
+    .text-gray-right{
+    color:gray;
+    }
+    .text-black{
+    color:black;
+    font-weight: bold;
+    }
+    .Section-1{
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    }
+    .Section-2{
+    text-align: left;
+    justify-content: left;
+    border-top: 1px dotted;
     }
     .Padd-left{
-      text-align: left;
+    text-align: left;
     }
     table, td {
-     width: fit-content;
-     justify-content:center;
+    width: fit-content;
+    justify-content:center;
+    border: 1px dotted;
+    border-collapse:collapse;
     }
     body{
     display: flex;
@@ -35,7 +35,7 @@ function getStyles() {
     border: solid;
     }
     h3{
-      text-align: center;
+    text-align: center;
     }
     `;
 }
