@@ -2,8 +2,7 @@ import { CustomerDataJson, Item } from "./interfaces";
 import getStyles from "../src/invoiceStyling";
 
 const PERCENTAGE_FACTOR=0.01;
-
-const gstPercentage= {essential:1,luxery:5,default:10}; // Based on categeory the percentage will be taken
+const GST_PERCENTAGE= {essential:1,luxery:5,default:10}; // Based on categeory the percentage will be taken
 
 function getItemsTableRow(item:Item,itemDiscountAmount:number,itemAmount:number,itemGst:number){
 
@@ -13,7 +12,7 @@ return(`<tr>
           <td>₹${item.rate}</td>
           <td>${item.discount}</td>
           <td>${itemDiscountAmount}</td>
-          <td>${gstPercentage[item.gstCategory]}</td>
+          <td>${GST_PERCENTAGE[item.gstCategory]}</td>
           <td>${itemGst} </td>
           <td>₹${itemAmount}</td>
         </tr>
@@ -21,7 +20,7 @@ return(`<tr>
 
 }
 
-function getHtmlHeader(){
+function getInvoiceHeader(){
 
 return(`<!DOCTYPE html>
 <html lang="en">
@@ -51,11 +50,11 @@ return(`<div class= "Section-1">
 )
 }
 
-function getTotalAmount(){
-
+function getTotalAmount(price:number,gst:number,discount:number){
+  return(price+gst-discount)
 }
 function getDeliveryHTML(customerData: CustomerDataJson) {
-  let html = `${getHtmlHeader()}
+  let html = `${getInvoiceHeader()}
 <body>
     ${getContactDetails(customerData.storeName,customerData.address,customerData.name,customerData.phoneNumber)}
     <div class="Section-2">
@@ -71,21 +70,24 @@ function getDeliveryHTML(customerData: CustomerDataJson) {
           <td>Item Amount</td>
         </tr>
         `;
+
   let totalAmount = 0,
     totalItemsDiscountAmount = 0,
     totalGst = 0,
     totalItemsPrice = 0;
+
   for (let item of customerData.items) {
     let itemPrice = item.qty * item.rate;
 
-    let itemGst =realtedPercentageAmount( itemPrice , gstPercentage[item.gstCategory])
+    let itemGst =realtedPercentageAmount( itemPrice , GST_PERCENTAGE[item.gstCategory])
     let itemDiscountAmount = realtedPercentageAmount(itemPrice ,item.discount);
+    let itemAmount = getTotalAmount(itemPrice, itemGst,itemDiscountAmount);
 
     totalGst += itemGst;
     totalItemsDiscountAmount += itemDiscountAmount;
-    let itemAmount = itemPrice + itemGst - itemDiscountAmount;
     totalItemsPrice += itemPrice;
     totalAmount += itemAmount;
+
     html += `${getItemsTableRow(item,itemDiscountAmount,itemAmount,itemGst)}`;
   }
 
@@ -117,14 +119,8 @@ function getDeliveryHTML(customerData: CustomerDataJson) {
 }
 
 const getInvoice = async function getInvoice(customerData: CustomerDataJson) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const html = getDeliveryHTML(customerData);
-      resolve(html);
-    } catch (err) {
-      reject(err);
-    }
-  });
+       let html=getDeliveryHTML(customerData);
+      return html
 };
 
 module.exports = getInvoice;
