@@ -2,7 +2,7 @@ export type Item = {
   name: string;
   qty: number;
   rate: number;
-  gstCategory: number;
+  gstCategory:"luxery"|"essential"|"default";
   discount: number;
 };
 export interface CustomerDataJson {

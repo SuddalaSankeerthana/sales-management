@@ -1,8 +1,12 @@
 import { CustomerDataJson, Item } from "./interfaces";
 import getStyles from "../src/invoiceStyling";
+
 const PERCENTAGE_FACTOR=0.01;
-const gstPercentage:number[]= [1, 5, 10]; // Based on categeory the percentage will be taken
+
+const gstPercentage= {essential:1,luxery:5,default:10}; // Based on categeory the percentage will be taken
+
 function getItemsTableRow(item:Item,itemDiscountAmount:number,itemAmount:number,itemGst:number){
+
 return(`<tr>
           <td>${item.name}</td>
           <td>${item.qty}</td>
@@ -14,8 +18,11 @@ return(`<tr>
           <td>₹${itemAmount}</td>
         </tr>
         `);
+
 }
+
 function getHtmlHeader(){
+
 return(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +32,14 @@ return(`<!DOCTYPE html>
 <style>${getStyles()}</style>
 </head>
 `)
+
 }
+
+function realtedPercentageAmount(itemPrice:number,percentage:number)
+{
+  return(itemPrice * PERCENTAGE_FACTOR * percentage);
+}
+
 function getContactDetails(storeName:string,address:string,customerName:string,phoneNumber:string){
 return(`<div class= "Section-1">
       <h3 class="font-bold">${storeName}</h3>
@@ -35,6 +49,10 @@ return(`<div class= "Section-1">
       <p class="Padd-left"><span class="text-black">Date : </span>${new Date()}</p>
     </div>`
 )
+}
+
+function getTotalAmount(){
+
 }
 function getDeliveryHTML(customerData: CustomerDataJson) {
   let html = `${getHtmlHeader()}
@@ -58,12 +76,13 @@ function getDeliveryHTML(customerData: CustomerDataJson) {
     totalGst = 0,
     totalItemsPrice = 0;
   for (let item of customerData.items) {
-    let itemGst =
-      item.qty * (item.rate * PERCENTAGE_FACTOR) * gstPercentage[item.gstCategory];
-    totalGst += itemGst;
-    let itemDiscountAmount = item.rate * PERCENTAGE_FACTOR * item.discount;
-    totalItemsDiscountAmount += itemDiscountAmount;
     let itemPrice = item.qty * item.rate;
+
+    let itemGst =realtedPercentageAmount( itemPrice , gstPercentage[item.gstCategory])
+    let itemDiscountAmount = realtedPercentageAmount(itemPrice ,item.discount);
+
+    totalGst += itemGst;
+    totalItemsDiscountAmount += itemDiscountAmount;
     let itemAmount = itemPrice + itemGst - itemDiscountAmount;
     totalItemsPrice += itemPrice;
     totalAmount += itemAmount;
