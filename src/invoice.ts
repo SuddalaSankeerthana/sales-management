@@ -1,118 +1,39 @@
-import exp from "constants";
-import { realtedPercentageAmount } from "./calcualtions/percentageAmount";
-// import { getStoreDiscountCaluculation } from "./calcualtions/storecalculations";
-import { getTotalAmount } from "./calcualtions/totalAmount";
-import { CustomerDataJson, Item } from "./interfaces";
-import { getInvoiceHeader } from "./invoiceHeader";
-import { getSummaryHTML } from "./summery";
-import { getItemsTableRowsWithCaluculations } from "./invoiceTable";
-import { getStoreDiscountCaluculation } from "./calcualtions/storeCalculations";
+import { CustomerDataJson } from "./interfaces";
+import { getDeliveryHTML } from "./invoiceHtml";
 
-export const  PERCENTAGE_FACTOR = 0.01;
-export const GST_PERCENTAGE = { essential: 1, luxery: 5, default: 10 }; // Based on categeory the percentage will be taken
+export const PERCENTAGE_FACTOR = 0.01;
+export const GST_PERCENTAGE = { essential: 1, luxery: 5, default: 10 };
 
 export var totalAmount = 0,
   totalItemsDiscountAmount = 0,
   totalGst = 0,
   totalItemsPrice = 0;
-export function addToTotalAmountWith(amount:number){
-  totalAmount+=amount;
-}
-export function addToTotalItemsDiscountAmountWith(discountAmount:number){
-  totalItemsDiscountAmount+=discountAmount;
-}
-export function addTototalGstWith(gst:number){
-  totalGst+=gst;
-}
-export function addTotalItemsPriceWith(itemPrice:number){
-  totalItemsPrice+=itemPrice;
-}
-export function subToTotalAmountWith(amount:number){
-  totalAmount-=amount;
-}
-export function subToTotalItemPriceWith(amount:number){
-  totalItemsPrice-=amount;
-}
 
-function getContactDetails(
-  storeName: string,
-  address: string,
-  customerName: string,
-  phoneNumber: string
-) {
-  return `<div class= "Section-1">
-      <h3 class="font-bold">${storeName}</h3>
-      <p><span class="text-black"> <Address>${address}</Address></span></p>
-      <p class="Padd-left"><span class="text-black">Name: </span>${customerName}</p>
-      <p class="Padd-left"><span class="text-black">Phone number: </span>${phoneNumber}</p>
-      <p class="Padd-left"><span class="text-black">Date : </span>${new Date()}</p>
-    </div>`;
+export function addToTotalAmountWith(amount: number) {
+  totalAmount += amount;
 }
-
-
-function getAllCalulationsPeformedOnTable(customerData: CustomerDataJson) {
-  let html = ``;
-  for (let item of customerData.items) {
-    let itemPrice = item.qty * item.rate;
-
-    let itemGst = realtedPercentageAmount(
-      itemPrice,
-      GST_PERCENTAGE[item.gstCategory]
-    );
-    let itemDiscountAmount = realtedPercentageAmount(itemPrice, item.discount);
-    let itemAmount = getTotalAmount(itemPrice, itemGst, itemDiscountAmount);
-
-    totalGst += itemGst;
-    totalItemsDiscountAmount += itemDiscountAmount;
-    totalItemsPrice += itemPrice;
-    totalAmount += itemAmount;
-
-    html += `${getItemsTableRowsWithCaluculations(item)}`;
-  }
-  return html;
+export function addToTotalItemsDiscountAmountWith(discountAmount: number) {
+  totalItemsDiscountAmount += discountAmount;
 }
-
-function getDeliveryHTML(customerData: CustomerDataJson): string {
-  let html = `${getInvoiceHeader()}
-<body>
-    ${getContactDetails(
-      customerData.storeName,
-      customerData.address,
-      customerData.name,
-      customerData.phoneNumber
-    )}
-    <div class="Section-2">
-      <table>
-        <tr class="text-black">
-          <td>Item</td>
-          <td>quantity</td>
-          <td>Price</td>
-          <td>Discount(%)</td>
-          <td>Discount Amount</td>
-          <td>GST(%)</td>
-          <td>GST Amount</td>
-          <td>Item Amount</td>
-        </tr>
-        ${getAllCalulationsPeformedOnTable(customerData)}
-      </table>
-  </div>`;
-  let{storeDiscount,storeDiscountAmount}=getStoreDiscountCaluculation(customerData.storeDiscounts)
-  html+=`
-   ${getSummaryHTML(
-    storeDiscount,
-    storeDiscountAmount,
-    customerData.paymentMethod
-  )}
-    `;
-  return html;
+export function addTototalGstWith(gst: number) {
+  totalGst += gst;
+}
+export function addTotalItemsPriceWith(itemPrice: number) {
+  totalItemsPrice += itemPrice;
+}
+export function subToTotalAmountWith(amount: number) {
+  totalAmount -= amount;
+}
+export function subToTotalItemPriceWith(amount: number) {
+  totalItemsPrice -= amount;
 }
 
 const getInvoice = function getInvoice(customerData: CustomerDataJson): string {
+  (totalAmount = 0),
+    (totalItemsDiscountAmount = 0),
+    (totalGst = 0),
+    (totalItemsPrice = 0);
   let html = getDeliveryHTML(customerData);
-  totalAmount = 0,
-  totalItemsDiscountAmount = 0,
-  totalGst = 0,
-  totalItemsPrice = 0;
   return html;
 };
 
