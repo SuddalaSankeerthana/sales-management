@@ -1,4 +1,4 @@
-function getStyles() {
+export function getStyles() {
   return `
     .text-gray-right{
     color:gray;
@@ -39,5 +39,3 @@ function getStyles() {
     }
     `;
 }
-
-module.exports = getStyles;

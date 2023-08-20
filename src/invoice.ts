@@ -1,14 +1,27 @@
 import { CustomerDataJson, Item } from "./interfaces";
-import getStyles from "../src/invoiceStyling";
+import { getInvoiceHeader } from "./invoiceHeader";
+import { getSummaryHTML } from "./summery";
 
-const PERCENTAGE_FACTOR = 0.01;
-const GST_PERCENTAGE = { essential: 1, luxery: 5, default: 10 }; // Based on categeory the percentage will be taken
+export const  PERCENTAGE_FACTOR = 0.01;
+export const GST_PERCENTAGE = { essential: 1, luxery: 5, default: 10 }; // Based on categeory the percentage will be taken
 
-var totalAmount = 0,
+export var totalAmount = 0,
   totalItemsDiscountAmount = 0,
   totalGst = 0,
   totalItemsPrice = 0;
+export function addToTotalAmountWith(itemAmount:number){
+  totalAmount+=itemAmount;
+}
 
+export function addToTotalItemsDiscountAmountWith(discountAmount:number){
+  totalItemsDiscountAmount+=discountAmount;
+}
+export function addTototalGstWith(gst:number){
+  totalGst+=gst;
+}
+export function addTotalItemsPriceWith(itemPrice:number){
+  totalItemsPrice+=itemPrice;
+}
 function getItemsTableRowsWithCaluculations(item: Item): string {
   let itemPrice = item.qty * item.rate;
   let itemGst = realtedPercentageAmount(
@@ -34,18 +47,6 @@ function getItemsTableRowsWithCaluculations(item: Item): string {
           <td>₹${itemAmount}</td>
         </tr>
         `;
-}
-
-function getInvoiceHeader(): string {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invoice</title>
-<style>${getStyles()}</style>
-</head>
-`;
 }
 
 function realtedPercentageAmount(
@@ -96,31 +97,7 @@ function getAllCalulationsPeformedOnTable(customerData: CustomerDataJson) {
   return html;
 }
 
-function getSummaryHTML(
-  totalAmount: number,
-  totalItemsDiscountAmount: number,
-  totalGst: number,
-  totalItemsPrice: number,
-  storeDiscount: number,
-  storeDiscountAmount: number,
-  paymentMethod: String
-) {
-  return `
-  <div class=" pt-20 pr-10 text-right">
-    <p class="text-black">SUMMERY</p>
-    <p class="text-gray-right">Total price : <span class="text-black">₹${totalItemsPrice}</span></p>
-    <p class="text-gray-right">Total GST : <span class="text-black">₹${totalGst}</span></p>
-    <p class="text-gray-right">Store Discount(%) : <span class="text-black">${storeDiscount}</span></p>
-    <p class="text-gray-right">Store Discount Amount: <span class="text-black">₹${storeDiscountAmount}</span></p>
-    <p class="text-gray-right">Total Money Saved: <span class="text-black">₹${
-      storeDiscountAmount + totalItemsDiscountAmount
-    }</span></p>
-    <p class="text-gray-right">Total Amount : <span class="text-black">₹${totalAmount}</span></p>
-    <p>Payment method : ${paymentMethod}</p>
-  </div>
-</body>
-</html>`;
-}
+
 function getStoreDiscountCaluculation(storeDiscounts:[]){
   let storeDiscount = 0;
   storeDiscounts.forEach(
@@ -163,10 +140,6 @@ function getDeliveryHTML(customerData: CustomerDataJson): string {
   let{storeDiscount,storeDiscountAmount}=getStoreDiscountCaluculation(customerData.storeDiscounts)
   html+=`
    ${getSummaryHTML(
-    totalAmount,
-    totalItemsDiscountAmount,
-    totalGst,
-    totalItemsPrice,
     storeDiscount,
     storeDiscountAmount,
     customerData.paymentMethod
