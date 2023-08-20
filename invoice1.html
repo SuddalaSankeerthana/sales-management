@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice</title>
+  <style>
+    .text-gray-right{
+    color:gray;
+    }
+    .text-black{
+    color:black;
+    font-weight: bold;
+    }
+    .Section-1{
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    }
+    .Section-2{
+    text-align: left;
+    justify-content: left;
+    border-top: 1px dotted;
+    }
+    .Padd-left{
+    text-align: left;
+    }
+    table, td {
+    width: fit-content;
+    justify-content:center;
+    border: 1px dotted;
+    border-collapse:collapse;
+    }
+    body{
+    display: flex;
+    width: fit-content;
+    align-items: right;
+    justify-content: center;
+    flex-direction: column;
+    font-family:monospace;
+    border: solid;
+    }
+    h3{
+    text-align: center;
+    }
+    </style>
+  </head>
+    <body>
+      <div class= "Section-1">
+        <h3 class="font-bold">Vishal Mega Mart</h3>
+        <p><span class="text-black"> <Address>4th Main Road, Hal, HAL 3rd Stage, New Tippasandra, Bengaluru, Karnataka</Address></span></p>
+        <p class="Padd-left"><span class="text-black">Name: </span>Vishal</p>
+        <p class="Padd-left"><span class="text-black">Phone number: </span>99028893472</p>
+        <p class="Padd-left"><span class="text-black">Date : </span>Mon Aug 21 2023 01:21:31 GMT+0530 (India Standard Time)</p>
+    </div>
+      <div class="Section-2">
+      <table>
+        <tr class="text-black">
+          <td>Item</td>
+          <td>quantity</td>
+          <td>Price</td>
+          <td>Discount(%)</td>
+          <td>Discount Amount</td>
+          <td>GST(%)</td>
+          <td>GST Amount</td>
+          <td>Item Amount</td>
+        </tr><tr>
+            <td>Milk</td>
+            <td>2</td>
+            <td>₹10</td>
+            <td>10</td>
+            <td>2</td>
+            <td>1</td>
+            <td>0.2 </td>
+            <td>₹18.2</td>
+          </tr>
+          <tr>
+            <td>TV</td>
+            <td>1</td>
+            <td>₹10000</td>
+            <td>10</td>
+            <td>1000</td>
+            <td>5</td>
+            <td>500 </td>
+            <td>₹9500</td>
+          </tr>
+          <tr>
+            <td>Fridge</td>
+            <td>1</td>
+            <td>₹5000</td>
+            <td>10</td>
+            <td>500</td>
+            <td>5</td>
+            <td>250 </td>
+            <td>₹4750</td>
+          </tr>
+          </table>
+    </div>
+     
+    <div class=" pt-20 pr-10 text-right">
+      <p class="text-black">SUMMERY</p>
+      <p class="text-gray-right">Total price : <span class="text-black">₹15020</span></p>
+      <p class="text-gray-right">Total GST : <span class="text-black">₹750.2</span></p>
+      <p class="text-gray-right">Store Discount(%) : <span class="text-black">5</span></p>
+      <p class="text-gray-right">Store Discount Amount: <span class="text-black">₹751.0000000000001</span></p>
+      <p class="text-gray-right">Total Money Saved: <span class="text-black">₹2253</span></p>
+      <p class="text-gray-right">Total Amount : <span class="text-black">₹13517.2</span></p>
+      <p>Payment method : GPay</p>
+    </div>
+  </body>
+  </html>
+      
