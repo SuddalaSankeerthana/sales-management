@@ -3,12 +3,26 @@ import getStyles from "../src/invoiceStyling";
 
 const PERCENTAGE_FACTOR = 0.01;
 const GST_PERCENTAGE = { essential: 1, luxery: 5, default: 10 }; // Based on categeory the percentage will be taken
-function getItemsTableRow(
-  item: Item,
-  itemDiscountAmount: number,
-  itemAmount: number,
-  itemGst: number
-):string {
+
+var totalAmount = 0,
+  totalItemsDiscountAmount = 0,
+  totalGst = 0,
+  totalItemsPrice = 0;
+
+function getItemsTableRowsWithCaluculations(item: Item): string {
+  let itemPrice = item.qty * item.rate;
+  let itemGst = realtedPercentageAmount(
+    itemPrice,
+    GST_PERCENTAGE[item.gstCategory]
+  );
+  let itemDiscountAmount = realtedPercentageAmount(itemPrice, item.discount);
+  let itemAmount = getTotalAmount(itemPrice, itemGst, itemDiscountAmount);
+
+  totalGst += itemGst;
+  totalItemsDiscountAmount += itemDiscountAmount;
+  totalItemsPrice += itemPrice;
+  totalAmount += itemAmount;
+
   return `<tr>
           <td>${item.name}</td>
           <td>${item.qty}</td>
@@ -22,7 +36,7 @@ function getItemsTableRow(
         `;
 }
 
-function getInvoiceHeader():string {
+function getInvoiceHeader(): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +48,10 @@ function getInvoiceHeader():string {
 `;
 }
 
-function realtedPercentageAmount(itemPrice: number, percentage: number):number {
+function realtedPercentageAmount(
+  itemPrice: number,
+  percentage: number
+): number {
   return itemPrice * PERCENTAGE_FACTOR * percentage;
 }
 
@@ -53,50 +70,30 @@ function getContactDetails(
     </div>`;
 }
 
-function getTotalAmount(price: number, gst: number, discount: number):number {
+function getTotalAmount(price: number, gst: number, discount: number): number {
   return price + gst - discount;
 }
-function getAllCalulationsPeformed(customerData:CustomerDataJson){
-  let itemsTable=``;
-  let totalAmount = 0,
-  totalItemsDiscountAmount = 0,
-  totalGst = 0,
-  totalItemsPrice = 0;
 
-for (let item of customerData.items) {
-  let itemPrice = item.qty * item.rate;
+function getAllCalulationsPeformedOnTable(customerData: CustomerDataJson) {
+  let html = ``;
+  for (let item of customerData.items) {
+    let itemPrice = item.qty * item.rate;
 
-  let itemGst = realtedPercentageAmount(
-    itemPrice,
-    GST_PERCENTAGE[item.gstCategory]
-  );
-  let itemDiscountAmount = realtedPercentageAmount(itemPrice, item.discount);
-  let itemAmount = getTotalAmount(itemPrice, itemGst, itemDiscountAmount);
+    let itemGst = realtedPercentageAmount(
+      itemPrice,
+      GST_PERCENTAGE[item.gstCategory]
+    );
+    let itemDiscountAmount = realtedPercentageAmount(itemPrice, item.discount);
+    let itemAmount = getTotalAmount(itemPrice, itemGst, itemDiscountAmount);
 
-  totalGst += itemGst;
-  totalItemsDiscountAmount += itemDiscountAmount;
-  totalItemsPrice += itemPrice;
-  totalAmount += itemAmount;
+    totalGst += itemGst;
+    totalItemsDiscountAmount += itemDiscountAmount;
+    totalItemsPrice += itemPrice;
+    totalAmount += itemAmount;
 
-  itemsTable += `${getItemsTableRow(
-    item,
-    itemDiscountAmount,
-    itemAmount,
-    itemGst
-  )}`;
-}
-
-let storeDiscount = 0;
-customerData.storeDiscounts.forEach(
-  (item: { cost: number; discount: number }) => {
-    if (totalItemsPrice >= item.cost) storeDiscount = item.discount;
+    html += `${getItemsTableRowsWithCaluculations(item)}`;
   }
-);
-
-let storeDiscountAmount = realtedPercentageAmount(totalItemsPrice,storeDiscount);
-totalAmount -= storeDiscountAmount;
-return(
-  {totalAmount,totalItemsDiscountAmount,totalGst,totalItemsPrice,storeDiscount,storeDiscountAmount,itemsTable})
+  return html;
 }
 
 function getSummaryHTML(
@@ -108,7 +105,7 @@ function getSummaryHTML(
   storeDiscountAmount: number,
   paymentMethod: String
 ) {
-  return(`
+  return `
   <div class=" pt-20 pr-10 text-right">
     <p class="text-black">SUMMERY</p>
     <p class="text-gray-right">Total price : <span class="text-black">₹${totalItemsPrice}</span></p>
@@ -122,10 +119,24 @@ function getSummaryHTML(
     <p>Payment method : ${paymentMethod}</p>
   </div>
 </body>
-</html>`);
+</html>`;
 }
+function getStoreDiscountCaluculation(storeDiscounts:[]){
+  let storeDiscount = 0;
+  storeDiscounts.forEach(
+    (item: { cost: number; discount: number }) => {
+      if (totalItemsPrice >= item.cost) storeDiscount = item.discount;
+    }
+  );
 
-function getDeliveryHTML(customerData: CustomerDataJson):string {
+  let storeDiscountAmount = realtedPercentageAmount(
+    totalItemsPrice,
+    storeDiscount
+  );
+  totalAmount -= storeDiscountAmount;
+  return({storeDiscount,storeDiscountAmount})
+}
+function getDeliveryHTML(customerData: CustomerDataJson): string {
   let html = `${getInvoiceHeader()}
 <body>
     ${getContactDetails(
@@ -146,25 +157,30 @@ function getDeliveryHTML(customerData: CustomerDataJson):string {
           <td>GST Amount</td>
           <td>Item Amount</td>
         </tr>
-        `;
-  let{totalAmount,totalItemsDiscountAmount,totalGst,totalItemsPrice,storeDiscount,storeDiscountAmount,itemsTable}=getAllCalulationsPeformed(customerData)
-  html+=itemsTable;
-  html += `</table>
-  </div>
-  ${getSummaryHTML(
+        ${getAllCalulationsPeformedOnTable(customerData)}
+      </table>
+  </div>`;
+  let{storeDiscount,storeDiscountAmount}=getStoreDiscountCaluculation(customerData.storeDiscounts)
+  html+=`
+   ${getSummaryHTML(
     totalAmount,
     totalItemsDiscountAmount,
     totalGst,
     totalItemsPrice,
     storeDiscount,
     storeDiscountAmount,
-    customerData.paymentMethod)}
+    customerData.paymentMethod
+  )}
     `;
   return html;
 }
 
-const getInvoice = function getInvoice(customerData: CustomerDataJson):string {
+const getInvoice = function getInvoice(customerData: CustomerDataJson): string {
   let html = getDeliveryHTML(customerData);
+  totalAmount = 0,
+  totalItemsDiscountAmount = 0,
+  totalGst = 0,
+  totalItemsPrice = 0;
   return html;
 };
 
