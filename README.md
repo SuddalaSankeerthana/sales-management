@@ -11,9 +11,8 @@
 - Need to have NodeJs of version above 18 to be installed
 - You need to install npm module and all the dependencies present in the package.json.
   ```
-  npm install --save
+  npm install
   ```
-- Required to add the .env with URI property of the database.
   
 ## Usage :
 

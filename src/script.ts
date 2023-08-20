@@ -1,13 +1,12 @@
 import fs from "fs";
 import { CustomerDataJson } from "./interfaces";
-const getInvoiceFunction =require("./invoice");
-const path = require("path");
-path.resolve(__dirname, "../file.xml")
-const jsonString = fs.readFileSync("./data/customerData.json",
-  "utf-8"
-);
+
+const getInvoiceFunction = require("./invoice");
+
+const jsonString = fs.readFileSync("./data/customerData.json", "utf-8");
+
 const jsonFileData: CustomerDataJson = JSON.parse(jsonString);
-getInvoiceFunction(jsonFileData).then((html:string)=>{
-    fs.writeFileSync("invoice.html", html);
-    console.log("File generated");
-});
+
+let html = getInvoiceFunction(jsonFileData);
+fs.writeFileSync("invoice.html", html);
+console.log("File generated");
