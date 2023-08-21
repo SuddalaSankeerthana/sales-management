@@ -3,7 +3,7 @@ export function getContactDetails(
   address: string,
   customerName: string,
   phoneNumber: string
-) {
+):string {
   return `<div class= "Section-1">
         <h3 class="font-bold">${storeName}</h3>
         <p><span class="text-black"> <Address>${address}</Address></span></p>

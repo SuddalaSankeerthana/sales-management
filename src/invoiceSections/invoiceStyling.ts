@@ -1,4 +1,4 @@
-export function getStyles() {
+export function getStyles():string{
   return `
     .text-gray-right{
     color:gray;

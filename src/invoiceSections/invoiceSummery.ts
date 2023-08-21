@@ -3,7 +3,7 @@ export function getSummaryHTML(
   storeDiscount: number,
   storeDiscountAmount: number,
   paymentMethod: String
-) {
+):string {
   return `
     <div class=" pt-20 pr-10 text-right">
       <p class="text-black">SUMMERY</p>

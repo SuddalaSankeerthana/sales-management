@@ -1,6 +1,6 @@
 import { getStyles } from "./invoiceStyling";
 
-export function getInvoiceHeader(): string {
+export function getInvoiceHeader():string {
   return `<!DOCTYPE html>
   <html lang="en">
   <head>

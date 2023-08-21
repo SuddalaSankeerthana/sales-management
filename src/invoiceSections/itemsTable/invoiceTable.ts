@@ -2,7 +2,7 @@
 import { CustomerDataJson } from "../../interfaces";
 import { getItemsTableRowsWithCaluculations } from "./invoiceTableRowsData";
 
-export function getItemsTable(customerData: CustomerDataJson) {
+export function getItemsTable(customerData: CustomerDataJson):string {
   let html = `<div class="Section-2">
       <table>
         <tr class="text-black">
