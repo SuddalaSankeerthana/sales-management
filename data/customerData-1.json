@@ -1,0 +1,36 @@
+{
+    "name":"Sneha",
+    "storeName": "Vishal Mega Mart",
+    "address":"4th Main Road, Hal, HAL 3rd Stage, New Tippasandra, Bengaluru, Karnataka",
+    "phoneNumber":"99028893472",
+    "GSTNumber":"06221936439",
+    "dateTime":"14-08-2023",
+    "paymentMethod":"GPay",
+    "items": [
+        {
+            "name": "Milk",
+            "qty": 2,
+            "rate": 10.00,
+            "gstCategory":"essential",
+            "discount":10
+        },
+        {
+            "name": "TV",
+            "qty": 1,
+            "rate": 15000,
+            "gstCategory":"luxery",
+            "discount":10
+        },
+        {
+            "name": "Fridge",
+            "qty": 1,
+            "rate": 8000,
+            "gstCategory":"luxery",
+            "discount":10
+        }
+    ],
+    "storeDiscounts" :[
+        {"cost": 500, "discount": 2 },
+        {"cost": 5000,"discount": 5 }
+    ]
+}

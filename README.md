@@ -5,15 +5,16 @@
 - Requirements and installations
 - Usage
 ## Description :
-- This repository takes the customer details in json format and generates a html invoice. This has implemented for single customer.
-- Implemting for multiple users and unit testing part yet to be done.
+
+- This repository takes the customer details in json format and generates a html invoice. This has implemented for single customer.And parllel invoice priting cannot happen but it can print invoices one after other.
+- Unit testing for invoice is in progess, few tests have been implemented.
+  
 ## Installations are requirements :
 - Need to have NodeJs of version above 18 to be installed
 - You need to install npm module and all the dependencies present in the package.json.
   ```
-  npm install --save
+  npm install
   ```
-- Required to add the .env with URI property of the database.
   
 ## Usage :
 
@@ -29,5 +30,9 @@ npm install
 - To run and generate the invoice, run the following command. Path for the json data in the script need to be updated for this.
 ```
 npm run start
+```
+- To run the tests run the following command
+```
+npm run test
 ```
 
